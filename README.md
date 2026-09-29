@@ -18,7 +18,7 @@ El backtesting reveló que el análisis identificó tres señales recurrentes as
 2. **Presión Fiscal:** Alta concentración de ajustes en la ventana del día 25 al 31 de cada mes por traslados impositivos.
 3. **Efecto de clustering temporal:** Se detectó empíricamente que los aumentos de precios tienden a concentrarse en ráfagas o ventanas temporales inferiores a las 72 horas entre eventos sucesivos.
 
-**Resultado del Backtesting:** Cruzando estas tres reglas, en el conjunto histórico utilizado para el backtesting, las reglas identificaron correctamente el 70,6% de los aumentos registrados**, demostrando que es posible predecir los movimientos del mercado utilizando inteligencia de fuentes abiertas y sin acceso a los reportes de costos corporativos.
+**Resultado del Backtesting:** Cruzando estas tres reglas, en el conjunto histórico utilizado para el backtesting, las reglas identificaron correctamente el 70,6% de los aumentos registrados, demostrando que es posible predecir los movimientos del mercado utilizando inteligencia de fuentes abiertas y sin acceso a los reportes de costos corporativos.
 
 ## 🚀 Tecnologías Utilizadas
 * **Lenguaje:** Python 3
