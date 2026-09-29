@@ -10,6 +10,7 @@ El proyecto se divide en dos módulos clave desarrollados en Python:
 
 1. **`predictor.py` (Motor OSINT):** Se conecta a Yahoo Finance (`yfinance`) para leer la variación del crudo Brent en tiempo real, cruza la fecha con el calendario impositivo local (ICL) y monitorea el comportamiento de la empresa líder del mercado (YPF). Con esto, emite un "Semáforo Ciudadano" (Verde, Amarillo, Naranja, Rojo) recomendando si es conveniente o no cargar combustible en el día de la fecha.
 2. **`backtesting.py` (Validación):** Para comprobar la eficacia de la lógica, se elaboró un script que contrasta las reglas del algoritmo contra un dataset confidencial de notificaciones internas de cambios de precio (Ground Truth) de los últimos meses en la ciudad de Rosario.
+3.  **`Nota metodológica sobre el diseño`:** El dataset de notificaciones históricas se utiliza exclusivamente como *Ground Truth* para la auditoría de backtesting, manteniendo las variables predictivas (ICL y Brent) en un esquema estrictamente causal (*lagged features*) para prevenir sesgos y evitar la fuga de datos (*data leakage*).
 
 ## 📊 Descubrimiento de Patrones y Efectividad
 El backtesting reveló que el mercado local obedece a tres variables predecibles:
