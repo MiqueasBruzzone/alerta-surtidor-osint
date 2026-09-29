@@ -16,7 +16,7 @@ El proyecto se divide en dos módulos clave desarrollados en Python:
 El backtesting reveló que el mercado local obedece a tres variables predecibles:
 1. **Presión Macro (Brent):** Traslados al surtidor días después de saltos internacionales mayores al 1.5%.
 2. **Presión Fiscal:** Alta concentración de ajustes en la ventana del día 25 al 31 de cada mes por traslados impositivos.
-3. **Efecto Dominó:** Si YPF ajusta, la competencia reacciona en una ventana menor a 72hs.
+3. **Efecto de clustering temporal:** Se detectó empíricamente que los aumentos de precios tienden a concentrarse en ráfagas o ventanas temporales inferiores a las 72 horas entre eventos sucesivos.
 
 **Resultado del Backtesting:** Cruzando estas tres reglas, el modelo predictivo logró anticipar correctamente el **70.6% de los aumentos sorpresa**, demostrando que es posible predecir los movimientos del mercado utilizando inteligencia de fuentes abiertas y sin acceso a los reportes de costos corporativos.
 
