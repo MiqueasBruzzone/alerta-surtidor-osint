@@ -1,26 +1,33 @@
-# ⛽ Alerta Surtidor: Predicción OSINT de Combustibles en Argentina
+# ⛽ Radar OSINT: Mercado de Combustibles (Argentina)
 
-Un sistema de alerta temprana diseñado para resolver la asimetría de información en el mercado de combustibles argentino, anticipando aumentos de precios mediante el uso de Inteligencia de Fuentes Abiertas (OSINT) y análisis predictivo.
+Un monitor predictivo automatizado construido con Python y Streamlit. Diseñado para resolver la asimetría de información en el mercado de combustibles argentino, anticipando aumentos de precios en surtidor mediante el análisis en tiempo real de variables macroeconómicas y geopolíticas (OSINT).
 
 ## 🎯 El Problema
-Recientemente, los cambios regulatorios en Argentina eliminaron la obligación de las petroleras de anunciar públicamente los aumentos de combustible con anticipación. Hoy, el consumidor descubre la suba recién al llegar al surtidor. Este proyecto busca devolverle esa visibilidad al conductor mediante el cruce de variables públicas internacionales y fiscales locales.
+En Argentina, los consumidores descubren los aumentos de combustible recién al llegar a la estación de servicio. Al no haber anuncios públicos anticipados por parte de las petroleras, el ciudadano pierde la capacidad de adelantarse y proteger su poder adquisitivo. 
 
-## 🛠️ Arquitectura del Proyecto
-El proyecto se divide en dos módulos clave desarrollados en Python:
+## 🚀 La Solución (Arquitectura del Dashboard)
+Este proyecto evolucionó de un sistema de registro manual de precios a un **Radar Analítico 100% automatizado**. En lugar de rastrear el precio final, el modelo se anticipa analizando la presión en la cadena de costos de las refinerías. 
 
-1. **`predictor.py` (Motor OSINT):** Se conecta a Yahoo Finance (`yfinance`) para leer la variación del crudo Brent en tiempo real, cruza la fecha con el calendario impositivo local (ICL) y monitorea el comportamiento de la empresa líder del mercado (YPF). Con esto, emite un "Semáforo Ciudadano" (Verde, Amarillo, Naranja, Rojo) recomendando si es conveniente o no cargar combustible en el día de la fecha.
-2. **`backtesting.py` (Validación):** Para comprobar la eficacia de la lógica, se elaboró un script que contrasta las reglas del algoritmo contra un dataset confidencial de notificaciones internas de cambios de precio (Ground Truth) de los últimos meses en la ciudad de Rosario.
-3.  **`Nota metodológica sobre el diseño`:** El dataset de notificaciones históricas se utiliza exclusivamente como *Ground Truth* para la auditoría de backtesting, manteniendo las variables predictivas (ICL y Brent) en un esquema estrictamente causal (*lagged features*) para prevenir sesgos y evitar la fuga de datos (*data leakage*).
+La aplicación web (`dashboard.py`) consta de tres módulos clave:
 
-## 📊 Descubrimiento de Patrones y Efectividad
-El backtesting reveló que el análisis identificó tres señales recurrentes asociadas a los aumentos:
-1. **Presión Macro (Brent):** Traslados al surtidor días después de saltos internacionales mayores al 1.5%.
-2. **Presión Fiscal:** Alta concentración de ajustes en la ventana del día 25 al 31 de cada mes por traslados impositivos.
-3. **Efecto de clustering temporal:** Se detectó empíricamente que los aumentos de precios tienden a concentrarse en ráfagas o ventanas temporales inferiores a las 72 horas entre eventos sucesivos.
+1. **Motor de Datos en Vivo (API Integration):** Se conecta a los mercados globales vía `yfinance` para trackear la cotización spot del Crudo Brent y el tipo de cambio oficial (USD/ARS).
+2. **Semáforo Predictivo (Inferencia):** Un algoritmo calcula la volatilidad de los últimos 7 días. Si detecta anomalías estadísticas en los costos (ej. un salto brusco del crudo por un conflicto geopolítico) o se entra en la ventana de actualización impositiva, emite una alerta roja sugiriendo cargar combustible.
+3. **Backtesting Dinámico:** Un escáner histórico que analiza los últimos 5 años de la cotización del petróleo buscando "shocks" (saltos >15% en 7 días) para demostrar empíricamente el tiempo de traslado (lag) hacia el precio local.
 
-**Resultado del Backtesting:** Cruzando estas tres reglas, en el conjunto histórico utilizado para el backtesting, las reglas identificaron correctamente el 70,6% de los aumentos registrados, demostrando que es posible predecir los movimientos del mercado utilizando inteligencia de fuentes abiertas y sin acceso a los reportes de costos corporativos.
+## 📊 Los 3 Vectores de Análisis
+El modelo dispara alertas sin intervención humana evaluando:
+* **Vector Internacional (Brent):** El crudo es el insumo primario. Aumentos por recortes de la OPEP o guerras impactan directo en la rentabilidad de las refinerías locales.
+* **Vector Cambiario (Dólar):** Al ser un mercado dolarizado, la devaluación del tipo de cambio oficial encarece las importaciones de componentes clave.
+* **Vector Fiscal (ICL):** Monitoreo de la ventana temporal de actualización programada del Impuesto a los Combustibles Líquidos (generalmente a fin de mes).
 
-## 🚀 Tecnologías Utilizadas
+## 🛠️️ Tecnologías Utilizadas
 * **Lenguaje:** Python 3
-* **Librerías:** Pandas, yfinance, Regular Expressions (RegEx), datetime.
-* **Técnicas:** OSINT, Feature Engineering, Integración de APIs financieras, Backtesting.
+* **Frontend / UI:** Streamlit (Inyección CSS personalizada para UI oscura)
+* **Procesamiento de Datos:** Pandas, NumPy
+* **Extracción de Datos (OSINT):** yfinance (Yahoo Finance API)
+
+## ⚙️ Cómo ejecutar el proyecto localmente
+
+1. Clonar el repositorio:
+   ```bash
+   git clone [https://github.com/MiqueasBruzzone/alerta-surtidor-osint.git](https://github.com/MiqueasBruzzone/alerta-surtidor-osint.git)
