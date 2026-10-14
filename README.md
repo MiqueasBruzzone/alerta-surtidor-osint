@@ -1,33 +1,66 @@
 # ⛽ Radar OSINT: Mercado de Combustibles (Argentina)
 
-Un monitor predictivo automatizado construido con Python y Streamlit. Diseñado para resolver la asimetría de información en el mercado de combustibles argentino, anticipando aumentos de precios en surtidor mediante el análisis en tiempo real de variables macroeconómicas y geopolíticas (OSINT).
+Monitor automatizado de señales de costos, construido con Python y Streamlit. Sigue variables del mercado global (Brent y dólar) y el calendario fiscal para mostrar cuándo hay presión sobre los costos de los combustibles en Argentina.
 
-## 🎯 El Problema
-En Argentina, los consumidores descubren los aumentos de combustible recién al llegar a la estación de servicio. Al no haber anuncios públicos anticipados por parte de las petroleras, el ciudadano pierde la capacidad de adelantarse y proteger su poder adquisitivo. 
+> Es un indicador informativo basado en reglas simples. No predice aumentos ni constituye asesoramiento.
 
-## 🚀 La Solución (Arquitectura del Dashboard)
-Este proyecto evolucionó de un sistema de registro manual de precios a un **Radar Analítico 100% automatizado**. En lugar de rastrear el precio final, el modelo se anticipa analizando la presión en la cadena de costos de las refinerías. 
+## 🎯 El problema
 
-La aplicación web (`dashboard.py`) consta de tres módulos clave:
+En Argentina, los aumentos de combustible suelen conocerse recién al llegar a la estación de servicio. Este proyecto busca dar una referencia previa mirando la presión sobre los costos, en lugar del precio final.
 
-1. **Motor de Datos en Vivo (API Integration):** Se conecta a los mercados globales vía `yfinance` para trackear la cotización spot del Crudo Brent y el tipo de cambio oficial (USD/ARS).
-2. **Semáforo Predictivo (Inferencia):** Un algoritmo calcula la volatilidad de los últimos 7 días. Si detecta anomalías estadísticas en los costos (ej. un salto brusco del crudo por un conflicto geopolítico) o se entra en la ventana de actualización impositiva, emite una alerta roja sugiriendo cargar combustible.
-3. **Backtesting Dinámico:** Un escáner histórico que analiza los últimos 5 años de la cotización del petróleo buscando "shocks" (saltos >15% en 7 días) para demostrar empíricamente el tiempo de traslado (lag) hacia el precio local.
+## 🚀 Qué hace la app
 
-## 📊 Los 3 Vectores de Análisis
-El modelo dispara alertas sin intervención humana evaluando:
-* **Vector Internacional (Brent):** El crudo es el insumo primario. Aumentos por recortes de la OPEP o guerras impactan directo en la rentabilidad de las refinerías locales.
-* **Vector Cambiario (Dólar):** Al ser un mercado dolarizado, la devaluación del tipo de cambio oficial encarece las importaciones de componentes clave.
-* **Vector Fiscal (ICL):** Monitoreo de la ventana temporal de actualización programada del Impuesto a los Combustibles Líquidos (generalmente a fin de mes).
+La aplicación (`dashboard.py`) tiene tres pestañas:
 
-## 🛠️️ Tecnologías Utilizadas
-* **Lenguaje:** Python 3
-* **Frontend / UI:** Streamlit (Inyección CSS personalizada para UI oscura)
-* **Procesamiento de Datos:** Pandas, NumPy
-* **Extracción de Datos (OSINT):** yfinance (Yahoo Finance API)
+1. **Radar en vivo:** muestra el Brent (futuro del contrato más cercano) y el dólar en pesos (ARS=X), con su variación en los últimos 7 días corridos y los umbrales de cada señal. Los datos vienen de Yahoo Finance vía `yfinance`.
+2. **Semáforo de señales:** combina tres señales y muestra un color.
+3. **Shocks históricos del Brent:** registra los saltos de más de 15% en 7 ruedas de mercado de los últimos 5 años. Todavía no se comparan con los aumentos reales en surtidor.
 
-## ⚙️ Cómo ejecutar el proyecto localmente
+## 🚦 Las tres señales
+
+| Señal | Se activa cuando |
+|---|---|
+| Brent | sube más de 5% en 7 días |
+| Dólar | sube más de 4% en 7 días |
+| Calendario fiscal (ICL) | estamos desde el día 25 del mes |
+
+- 🔴 **Rojo:** 2 o más señales activas.
+- 🟡 **Amarillo:** 1 señal activa, o una suba de más de 2% en Brent o dólar.
+- 🟢 **Verde:** sin señales.
+
+Los umbrales se pueden cambiar en las primeras líneas de `dashboard.py`.
+
+## ⚠️ Limitaciones
+
+- Los umbrales fueron definidos por el autor y no están calibrados con aumentos reales en surtidor.
+- No mide decisiones políticas, acuerdos de precios ni postergaciones del ICL.
+- Las petroleras pueden absorber subas del crudo durante semanas antes de trasladarlas.
+- El Brent proviene de contratos de futuros, que pueden mostrar saltos al cambiar de contrato.
+- Los datos de Yahoo Finance pueden tener demora o diferir de las cotizaciones oficiales.
+
+## 🛠️ Tecnologías
+
+- Python 3
+- Streamlit (con CSS personalizado para el tema oscuro)
+- Pandas
+- yfinance (datos de Yahoo Finance)
+
+## ⚙️ Cómo ejecutarlo localmente
 
 1. Clonar el repositorio:
-   ```bash
-   git clone [https://github.com/MiqueasBruzzone/alerta-surtidor-osint.git](https://github.com/MiqueasBruzzone/alerta-surtidor-osint.git)
+```
+   git clone https://github.com/MiqueasBruzzone/alerta-surtidor-osint.git
+   cd alerta-surtidor-osint
+```
+2. Instalar las librerías:
+```
+   pip install streamlit yfinance pandas
+```
+3. Correr la app:
+```
+   streamlit run dashboard.py
+```
+
+## 🔜 Próximo paso
+
+Validar las señales contra los aumentos reales de precios en surtidor.
